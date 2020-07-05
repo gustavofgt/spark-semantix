@@ -44,13 +44,14 @@ object NasaDatasetAnalysis {
       .show()
 
     query.createOrReplaceTempView("tblog")
+    
 
     //3. Os 5 URLs que mais causaram erro 404.
-    val topUrlErrors = spark.sql("SELECT request, count(*) 404error_qty FROM tblog WHERE responsecode = 404 GROUP BY request ORDER BY 2 desc LIMIT 5 ")
+    val topUrlErrors = spark.sql("SELECT request, count(*) 404error_qty FROM tblog WHERE responsecode = \"404\" GROUP BY request ORDER BY 2 desc LIMIT 5 ")
       .show(truncate = false)
 
     //4. Quantidade de erros 404 por dia.
-    val errorsPerDay = spark.sql("SELECT substring(timestamp,1,11) as date, count(*) as 404error_qty FROM tblog WHERE responsecode = 404 GROUP BY substring(timestamp,1,11)")
+    val errorsPerDay = spark.sql("SELECT substring(timestamp,1,11) as date, count(*) as 404error_qty FROM tblog WHERE responsecode = \"404\" GROUP BY substring(timestamp,1,11)")
       .show(truncate = false)
 
     //5. O total de bytes retornados.
